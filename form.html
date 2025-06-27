@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💖 Daily Care Form</title>
+  <style>
+    body {
+      background: #fff0f6;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+      color: #5e3b61;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d63384;
+      font-size: 20px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #9b287b;
+    }
+
+    input, select, textarea {
+      width: 90%;
+      padding: 10px 15px;
+      margin-top: 8px;
+      border-radius: 15px;
+      border: 2px solid #f8c1e0;
+      background: #fffafc;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #e26da9;
+      outline: none;
+      box-shadow: 0 0 10px rgba(255, 182, 193, 0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      margin-top: 30px;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      color: #6e2f4d;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #fcb1cd, #ffd6e0);
+      box-shadow: 0 0 12px #ffb6c1;
+      transform: scale(1.03);
+    }
+
+    /* Thank You Popup Style */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      background: #fff0f6;
+      border: 3px dashed #f39ac9;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 192, 203, 0.5);
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+      transition: all 0.4s ease;
+    }
+
+    .popup.show {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .popup h2 {
+      color: #d63384;
+      font-size: 24px;
+    }
+
+    .popup p {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #6e2f4d;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💖 Jaan Health Tracker</h1>
+
+  <form id="healthForm" action="https://script.google.com/macros/s/AKfycbxTVJIdB6C4y8F9ttjvgJrgTM4cutmGF1yAEoTeCpqBGuLzxUZvItLLcnL4hdRoUFv9/exec" method="POST" target="invisible_iframe">
+    <label>📅 Date</label>
+    <input type="date" name="date" required>
+
+    <label>⏰ Lunch Time</label>
+    <input type="time" name="lunch_time" required>
+
+    <label>🍱 Lunch Menu</label>
+    <input type="text" name="lunch_menu" placeholder="Kya khaya tha?" required>
+
+    <label>💧 Thanda Pani Zyada Piya?</label>
+    <select name="water">
+      <option value="Haan">Haan</option>
+      <option value="Nahi">Nahi</option>
+    </select>
+
+    <label>🛏️ School ke baad rest kiya?</label>
+    <select name="rested">
+      <option value="Haan">Haan</option>
+      <option value="Nahi">Nahi</option>
+    </select>
+
+    <label>🕰️ Kitna rest kiya?</label>
+    <textarea name="rest_time" rows="2" placeholder="Jese 1 ghanta ya 30 mins"></textarea>
+
+    <label>🍽️ Dinner Time</label>
+    <input type="time" name="dinner_time" required>
+
+    <label>😴 Sleep Time</label>
+    <input type="time" name="sleep_time" id="sleep_time" required>
+
+    <div id="lateReasonBox" class="hidden">
+      <label>💤 Late Sleep ki Wajah?</label>
+      <textarea name="late_reason" rows="2" placeholder="Kyu late soyi?"></textarea>
+    </div>
+
+    <button type="submit">💌 Submit</button>
+  </form>
+
+  <iframe name="invisible_iframe" style="display:none;"></iframe>
+
+  <!-- Thank You Popup -->
+  <div class="popup" id="thankPopup">
+    <h2>💖 Thank You!</h2>
+    <p>Jaan, tumhara din sun ke acha laga! 😚<br>Take care and rest well 💕</p>
+  </div>
+
+  <script>
+    const sleepTimeInput = document.getElementById("sleep_time");
+    const lateReasonBox = document.getElementById("lateReasonBox");
+    const form = document.getElementById("healthForm");
+    const popup = document.getElementById("thankPopup");
+
+    sleepTimeInput.addEventListener("change", function () {
+      const time = this.value;
+      const [hour] = time.split(":").map(Number);
+      lateReasonBox.classList.toggle("hidden", !(hour >= 0 && hour < 5));
+    });
+
+    form.addEventListener("submit", function () {
+      setTimeout(() => {
+        popup.classList.add("show");
+        setTimeout(() => popup.classList.remove("show"), 5000);
+        form.reset(); // optional: reset form after submit
+      }, 500); // delay to wait for actual submit
+    });
+  </script>
+
+</body>
+</html>
